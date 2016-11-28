@@ -36,7 +36,7 @@ int main()
 	}
 	else
 	{
-		OpenError();													//display error info
+		OpenError();						//display error info
 	}
 
 	fclose(fpNMEAInput);
