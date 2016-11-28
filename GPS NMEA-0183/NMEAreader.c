@@ -123,11 +123,11 @@ unsigned int ChecksumCalculater(char* Check)
 	char Checksum = 0x00;
 	unsigned int Length, Bit = 0;
 
-	Length = strlen(Check);										//get length
+	Length = strlen(Check);			//get length
 
 	while (Bit < Length)
 	{
-		Checksum ^= Check[Bit++];								//calculate checksum
+		Checksum ^= Check[Bit++];	//calculate checksum
 	}
 	return Checksum;
 }
@@ -152,20 +152,20 @@ BOOL MNEAChecksumChecker(NMEA_LINE_T *pNMEALine)
 	char *pCheckBegin = NULL, *pCheckEnd = NULL;
 	unsigned int LineChecksum = 0x00, CalChecksum = 0x00;
 	
-	pCheckBegin = strchr(pNMEALine->NMEALine, '$');						//where checksum calculate start
-	pCheckEnd = strchr(pNMEALine->NMEALine, '*');						//where checksum calculate end
+	pCheckBegin = strchr(pNMEALine->NMEALine, '$');		//where checksum calculate start
+	pCheckEnd = strchr(pNMEALine->NMEALine, '*');		//where checksum calculate end
 	
-	if (NULL == pCheckBegin || NULL == pCheckEnd)						//prevent project from break cuz by it come to end of buffer and the pointer is NULL
+	if (NULL == pCheckBegin || NULL == pCheckEnd)		//prevent project from break cuz by it come to end of buffer and the pointer is NULL
 	{
 		return FALSE;													
 	}
 
 	*pCheckEnd = 0;
 
-	CalChecksum = ChecksumCalculater(pCheckBegin + 1);					//calculate checksum
-	LineChecksum = strtol(pCheckEnd + 1, NULL, 16);						//get checksum from line
+	CalChecksum = ChecksumCalculater(pCheckBegin + 1);	//calculate checksum
+	LineChecksum = strtol(pCheckEnd + 1, NULL, 16);		//get checksum from line
 
-	return (CalChecksum == LineChecksum) ? TRUE : FALSE;				//compare checksum
+	return (CalChecksum == LineChecksum) ? TRUE : FALSE;	//compare checksum
 }
 
 
@@ -195,27 +195,27 @@ void NMEAAnalysiser(NMEA_LINE_T *pNMEALine, NMEA_ANALYZER_T *pNMEAnlyz)
 
 	FlagPointer = GetPointer;
 
-	memset(pNMEAnlyz, 0, sizeof(NMEA_ANALYZER_T));								//initialize struct
+	memset(pNMEAnlyz, 0, sizeof(NMEA_ANALYZER_T));		//initialize struct
 	
 	for (Byte = 0; Byte < pNMEALine->CharacterCount; Byte += 1)
 	{
 		if (TRUE == FlagPointer)
 		{
-			Pointer = &pNMEALine->NMEALine[Byte];								//get pointer of line
+			Pointer = &pNMEALine->NMEALine[Byte];	//get pointer of line
 
-			pNMEAnlyz->pNMEAnalysis[pNMEAnlyz->PointerCount] = Pointer;			//put pointers into array
+			pNMEAnlyz->pNMEAnalysis[pNMEAnlyz->PointerCount] = Pointer;	//put pointers into array
 			pNMEAnlyz->PointerCount += 1;
 
-			FlagPointer = StopGetPointer;										//set flag to stop get pointer
+			FlagPointer = StopGetPointer;		//set flag to stop get pointer
 		}
 
 		Character = pNMEALine->NMEALine[Byte];
 
 		if (Character == ',')
 		{
-			pNMEALine->NMEALine[Byte] = 0;										//set 0 to cut when there is a ','
+			pNMEALine->NMEALine[Byte] = 0;		//set 0 to cut when there is a ','
 
-			FlagPointer = GetPointer;											//set flag to get pointer
+			FlagPointer = GetPointer;		//set flag to get pointer
 		}
 	}
 }
@@ -247,9 +247,9 @@ void NMEAParseFrame(FILE *fpInput, FILE *fpNMEAData)
 	StartTime = clock();
 
 	memset(&NMEAData, 0, sizeof(NMEA_DATA_T));
-	memset(&NMEALine, 0, sizeof(NMEA_LINE_T));											//initialize struct
+	memset(&NMEALine, 0, sizeof(NMEA_LINE_T));				//initialize struct
 
-	BufferCount = fread(NMEABuffer, 1, sizeof(NMEABuffer), fpInput);					//put part of Info into buffer, and get size
+	BufferCount = fread(NMEABuffer, 1, sizeof(NMEABuffer), fpInput);	//put part of Info into buffer, and get size
 
 	while (BufferCount > 0)
 	{
@@ -257,15 +257,15 @@ void NMEAParseFrame(FILE *fpInput, FILE *fpNMEAData)
 		{
 			Character = NMEABuffer[LineByte];											//get Character for buffer
 
-			NMEALineGetter(Character, &NMEALine);										//get the line into CNMEALine->NMEALine
+			NMEALineGetter(Character, &NMEALine);			//get the line into CNMEALine->NMEALine
 
 			if (Character == '\n')
 			{
 				if (MNEAChecksumChecker(&NMEALine))											//check checksum
 				{
-					NMEAAnalysiser(&NMEALine, &NMEAnlyz);								//put line into array of pointers
+					NMEAAnalysiser(&NMEALine, &NMEAnlyz);	//put line into array of pointers
 
-					if (NMEAParser(&NMEAnlyz, &NMEAData, fpNMEAData)) 					//parse NMEA data
+					if (NMEAParser(&NMEAnlyz, &NMEAData, fpNMEAData)) 	
 					{
 						NumberSuccess++;
 					}
