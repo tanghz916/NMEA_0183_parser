@@ -24,15 +24,15 @@ int main()
 {
 	FILE *fpNMEAInput = NULL, *fpNMEAData = NULL;
 
-	_mkdir("parserInfo");												//build a folder
+	_mkdir("parserInfo");						//build a folder
 
-	fpNMEAInput = fopen("NMEA.log", "rb");								//open input file	
-	fpNMEAData = fopen("./parserInfo/NMEAData.txt", "wb");				//open output files
+	fpNMEAInput = fopen("NMEA.log", "rb");				//open input file	
+	fpNMEAData = fopen("./parserInfo/NMEAData.txt", "wb");		//open output files
 
 	if (NULL != fpNMEAInput && NULL != fpNMEAData)
 	{
-		ChartPreparer(fpNMEAData);										//prepare head of chart
-		NMEAParseFrame(fpNMEAInput, fpNMEAData);						//main frame of parser
+		ChartPreparer(fpNMEAData);				//prepare head of chart
+		NMEAParseFrame(fpNMEAInput, fpNMEAData);		//main frame of parser
 	}
 	else
 	{
