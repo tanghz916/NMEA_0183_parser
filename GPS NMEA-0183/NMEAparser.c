@@ -29,19 +29,19 @@ History:
 **************************************************************************/
 unsigned int SatelliteSystemReader(char *pHeader)
 {
-	if (0 == memcmp(pHeader + 1, "GP", 2))					//GPS, Global Positioning System
+	if (0 == memcmp(pHeader + 1, "GP", 2))		//GPS, Global Positioning System
 	{
 		return 1;
 	}
-	else if (0 == memcmp(pHeader + 1, "GL", 2))				//GLN, GLONASS
+	else if (0 == memcmp(pHeader + 1, "GL", 2))	//GLN, GLONASS
 	{
 		return 2;
 	}
-	else if (0 == memcmp(pHeader + 1, "GA", 2))				//GAL, Galileo satellite navigation system
+	else if (0 == memcmp(pHeader + 1, "GA", 2))	//GAL, Galileo satellite navigation system
 	{
 		return 3;
 	}
-	else if (0 == memcmp(pHeader + 1, "BD", 2))				//BDS, BeiDou Navigation Satellite System
+	else if (0 == memcmp(pHeader + 1, "BD", 2))	//BDS, BeiDou Navigation Satellite System
 	{
 		return 4;
 	}
@@ -241,7 +241,7 @@ void GSAParser(NMEA_ANALYZER_T *pNMEAnlyz, NMEA_DATA_T *pNMEAData)
 		for (Channel = 1; Channel < 13; Channel += 1)
 		{
 			SateID = atoi(pNMEAnlyz->pNMEAnalysis[Channel + 2]);
-			pNMEAData->SateID[SateID] = 1;								//to check if the sate in view is used 
+			pNMEAData->SateID[SateID] = 1;		//to check if the sate in view is used 
 		}
 
 		pNMEAData->FixMode = atoi(pFixMode);
@@ -278,7 +278,7 @@ void GSVParser(char *pHeader, NMEA_ANALYZER_T *pNMEAnlyz, NMEA_DATA_T *pNMEAData
 	
 	for (Byte = 4; Byte < pNMEAnlyz->PointerCount; Byte += 4)
 	{
-		pSVData = &pNMEAData->NMEASVData[Bit];						//used a array of pointer to reserve each sates info
+		pSVData = &pNMEAData->NMEASVData[Bit];		//used a array of pointer to reserve each sates info
 
 		SateID = atoi(pNMEAnlyz->pNMEAnalysis[Byte]);
 
@@ -456,25 +456,25 @@ History:
 BOOL NMEAParser(NMEA_ANALYZER_T *pNMEAnlyz, NMEA_DATA_T *pNMEAData, FILE *fpNMEAData)
 {
 	static NMEA_FLAG_T s_Flag;
-	static char s_TimeReserve[12] = { '\0' };										//static str to reserve time
+	static char s_TimeReserve[12] = { '\0' };		//static str to reserve time
 
 	unsigned int GSVSystem = 0;
 	char *pHeader;
 	
-	pHeader = pNMEAnlyz->pNMEAnalysis[0];											//get header to judge sentence type
+	pHeader = pNMEAnlyz->pNMEAnalysis[0];			//get header to judge sentence type
 
 	if (0 == memcmp(pHeader + 3, "GGA", 3))
 	{
 		if (0 == TimeHandler(pNMEAnlyz->pNMEAnalysis[1], s_TimeReserve)
-			|| (TRUE == s_Flag.FlagGGA && 1 != s_Flag.LastLine))					//judge time and flag, reserve new time if changed
+			|| (TRUE == s_Flag.FlagGGA && 1 != s_Flag.LastLine))		//judge time and flag, reserve new time if changed
 		{																			
-			NMEAOutput(pNMEAData, fpNMEAData);										//output info
+			NMEAOutput(pNMEAData, fpNMEAData);				
 
 			memset(s_TimeReserve, 0, sizeof(s_TimeReserve));
 			memset(&s_Flag, FALSE, sizeof(NMEA_FLAG_T));
 		}
 
-		GGAParser(pNMEAnlyz, pNMEAData);         									//parse data
+		GGAParser(pNMEAnlyz, pNMEAData);         		
 
 		memcpy(s_TimeReserve, pNMEAnlyz->pNMEAnalysis[1], 10);
 
@@ -538,9 +538,9 @@ BOOL NMEAParser(NMEA_ANALYZER_T *pNMEAnlyz, NMEA_DATA_T *pNMEAData, FILE *fpNMEA
 
 	else if (0 == memcmp(pHeader + 3, "GSV", 3))
 	{
-		GSVSystem = SatelliteSystemReader(pHeader);									//get system
+		GSVSystem = SatelliteSystemReader(pHeader);			
 
-		if ((1 == GSVSystem && TRUE == s_Flag.FlagSys.FlagGP) ||					//check system and flag		
+		if ((1 == GSVSystem && TRUE == s_Flag.FlagSys.FlagGP) ||		//check system and flag		
 			(2 == GSVSystem && TRUE == s_Flag.FlagSys.FlagGL) ||
 			(3 == GSVSystem && TRUE == s_Flag.FlagSys.FlagGA) ||
 			(4 == GSVSystem && TRUE == s_Flag.FlagSys.FlagBD))
@@ -553,9 +553,9 @@ BOOL NMEAParser(NMEA_ANALYZER_T *pNMEAnlyz, NMEA_DATA_T *pNMEAData, FILE *fpNMEA
 
 		GSVParser(pHeader, pNMEAnlyz, pNMEAData);
 
-		if (*pNMEAnlyz->pNMEAnalysis[1] == *pNMEAnlyz->pNMEAnalysis[2])				//check the number of sentence
+		if (*pNMEAnlyz->pNMEAnalysis[1] == *pNMEAnlyz->pNMEAnalysis[2])		//check the number of sentence
 		{
-			SystemFlagSetter(GSVSystem, &s_Flag);									//set flag to system
+			SystemFlagSetter(GSVSystem, &s_Flag);				//set flag to system
 		}
 
 		s_Flag.LastLine = 7;
