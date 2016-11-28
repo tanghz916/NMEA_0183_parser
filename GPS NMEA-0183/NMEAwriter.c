@@ -80,7 +80,7 @@ void LLAPutter(NMEA_DATA_T *pNMEAData, FILE *fpNMEAData)
 {
 	NMEA_OUT_T LLAData;
 	
-	LLAData.SizeCount = sprintf(LLAData.NMEAOutput, "%2d¡ã%02d¡ä%02d¡å%-4d\t%3d¡ã%02d¡ä%02d¡å%-4d\t%-7.3f\t%.3f\t",
+	LLAData.SizeCount = sprintf(LLAData.NMEAOutput, "%2dÂ¡Ã£%02dÂ¡Ã¤%02dÂ¡Ã¥%-4d\t%3dÂ¡Ã£%02dÂ¡Ã¤%02dÂ¡Ã¥%-4d\t%-7.3f\t%.3f\t",
 		pNMEAData->Latitude.Degree, pNMEAData->Latitude.Minute,
 		pNMEAData->Latitude.Second, pNMEAData->Latitude.MiliSec,
 		pNMEAData->Longitude.Degree, pNMEAData->Longitude.Minute,
@@ -247,8 +247,8 @@ void SVDataPutter(unsigned int DataNum, NMEA_SV_T *pSVData)
 	FILE *fpSVID;
 	char SVID[32] = { '\0' };
 
-	static char SateId[MAX_SATE_ID] = { '\0' };						//to check if the file is established
-	static char *pSateId[MAX_SATE_ID];								//reserve pointers of files
+	static char SateId[MAX_SATE_ID] = { '\0' };			//to check if the file is established
+	static char *pSateId[MAX_SATE_ID];				//reserve pointers of files
 	
 	if (SateId[pSVData->SatelliteID] == 0)
 	{
@@ -257,10 +257,10 @@ void SVDataPutter(unsigned int DataNum, NMEA_SV_T *pSVData)
 		fpSVID = fopen(SVID, "wb");
 
 		ChartPutter(fpSVID);
-		SVOut(DataNum, pSVData, fpSVID);							//out put info
+		SVOut(DataNum, pSVData, fpSVID);			//out put info
 
 		SateId[pSVData->SatelliteID] = 1;
-		pSateId[pSVData->SatelliteID] = (char*)fpSVID;				//reserve the pointer of file
+		pSateId[pSVData->SatelliteID] = (char*)fpSVID;		//reserve the pointer of file
 	}
 
 	else if (SateId[pSVData->SatelliteID] != 0)
@@ -313,7 +313,7 @@ void NMEAOutput(NMEA_DATA_T *pNMEAData, FILE *fpNMEAData)
 	static unsigned int s_DataNum = 1;
 
 	NMEADataOutputter(pNMEAData, s_DataNum, fpNMEAData);		//out put NMEA data
-	SVDataOutputter(pNMEAData, s_DataNum);						//out put sates in view data
+	SVDataOutputter(pNMEAData, s_DataNum);				//out put sates in view data
 
 	memset(pNMEAData, 0, sizeof(NMEA_DATA_T));
 
