@@ -7,23 +7,23 @@
 #ifndef _NMEA_H_
 #define _NMEA_H_
 
-///to assert buffer with size 1024
+/// to assert buffer with size 1024
 #define BUFFER_SIZE_ONE_TIME 1024
-///max satellite ID
+/// max satellite ID
 #define MAX_SATE_ID 256 
-///max pointer number in array of pointers
+/// max pointer number in array of pointers
 #define MAX_POINTER_NUMBER 48
-///to assert output buffer
+/// to assert output buffer
 #define MAX_OUTPUT_LINE_LENGTH 128
-///assert for calculate running time
+/// assert for calculate running time
 #define RUNNING_TIME(a, b) ((b) - (a))
 
-///BOOL Flag, TRUE(1) or FALSE(0)
+/// BOOL Flag, TRUE(1) or FALSE(0)
 typedef int BOOL;
 #define TRUE 1
 #define FALSE 0
 
-///date information
+/// date information
 typedef struct
 {
 	unsigned int Day;
@@ -31,7 +31,7 @@ typedef struct
 	unsigned int Year;
 }NMEA_DATE_T;
 
-///UTC time
+/// UTC time
 typedef struct
 {
 	unsigned int Hour;
@@ -40,7 +40,7 @@ typedef struct
 	unsigned int Millisec;
 }NMEA_TIME_T;
 
-///Latitude and Longitude
+/// Latitude and Longitude
 typedef struct
 {
 	int Degree;
@@ -49,7 +49,7 @@ typedef struct
 	unsigned int MiliSec;
 }NMEA_TUDE_T;
 
-///Data of SV(Satellites in View)
+/// Data of SV(Satellites in View)
 typedef struct
 {
 	unsigned int SateSys;
@@ -60,18 +60,18 @@ typedef struct
 	BOOL Used;
 }NMEA_SV_T;
 
-///Data of course and speed
+/// Data of course and speed
 typedef struct
 {
-	float SpeedOverGnd;					//speed over ground(knots)
-	float CourseOverGnd;				//course over ground(degrees)
-	float TrackDegInTrue;				//track degree relate to true north
-	float TrackDegInMagnetic;			//track degree relate to magnetic north
-	float SpeedN;						//measured horizontal speed(knots)
-	float SpeedK;						//measured horizontal speed(km/h)
+	float SpeedOverGnd;		//speed over ground(knots)
+	float CourseOverGnd;		//course over ground(degrees)
+	float TrackDegInTrue;		//track degree relate to true north
+	float TrackDegInMagnetic;	//track degree relate to magnetic north
+	float SpeedN;			//measured horizontal speed(knots)
+	float SpeedK;			//measured horizontal speed(km/h)
 }NMEA_MOVE_T;
 
-///Data of NMEA
+/// Data of NMEA
 typedef struct
 {
 	NMEA_DATE_T NMEADate;
@@ -79,12 +79,12 @@ typedef struct
 	NMEA_TUDE_T Latitude;
 	NMEA_TUDE_T Longitude;
 	BOOL DataStatus;
-	unsigned int PosFixInd;				//Position Fix Indicator
+	unsigned int PosFixInd;		//Position Fix Indicator
 	unsigned int FixMode;
-	unsigned int SateNumUsed;			//number of satellites in use
-	unsigned int SateInView;			//number of satellites in view
+	unsigned int SateNumUsed;	//number of satellites in use
+	unsigned int SateInView;	//number of satellites in view
 	float Altitude;
-	float GeoidSep;						//Geoid Separation
+	float GeoidSep;			//Geoid Separation
 	float PDOP;
 	float HDOP;
 	float VDOP;
@@ -93,28 +93,28 @@ typedef struct
 	char SateID[MAX_SATE_ID];
 }NMEA_DATA_T;
 
-///get a line and get character count
+// /get a line and get character count
 typedef struct
 {
 	char NMEALine[BUFFER_SIZE_ONE_TIME];
 	unsigned int CharacterCount;
 }NMEA_LINE_T;
 
-///analysis a line and get pointer count
+/// analysis a line and get pointer count
 typedef struct
 {
 	char *pNMEAnalysis[MAX_POINTER_NUMBER];
 	unsigned int PointerCount;
 }NMEA_ANALYZER_T;
 
-///reserve output info and get size count
+/// reserve output info and get size count
 typedef struct
 {
 	char NMEAOutput[MAX_OUTPUT_LINE_LENGTH];
 	unsigned int SizeCount;
 }NMEA_OUT_T;
 
-///flag for systems, GPS GLA GAL BDS
+/// flag for systems, GPS GLA GAL BDS
 typedef struct
 {
 	BOOL FlagGP;
@@ -123,7 +123,7 @@ typedef struct
 	BOOL FlagBD;
 }FLAG_SYSTEM_T;
 
-///set flag to sentences and reserve last line head info
+/// set flag to sentences and reserve last line head info
 typedef struct
 {
 	BOOL FlagGGA;
@@ -137,16 +137,16 @@ typedef struct
 	unsigned int VTGCount;
 }NMEA_FLAG_T;
 
-///print error information and exit
+/// print error information and exit
 void OpenError(void);
 
-///prepare the chart in output file
+/// prepare the chart in output file
 void ChartPreparer(FILE *fpNMEAData);
 
-///output info and initialize struct NMEAData
+/// output info and initialize struct NMEAData
 void NMEAOutput(NMEA_DATA_T *pNMEAData, FILE *fpNMEAData);
 
-///main of parser, identify Header, parse NMEA data
+/// main of parser, identify Header, parse NMEA data
 BOOL NMEAParser(NMEA_ANALYZER_T *NMEAnlyz, NMEA_DATA_T *NMEAData, FILE *fpNMEAData);
 
 /// a frame connect every parts together
