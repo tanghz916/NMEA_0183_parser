@@ -285,5 +285,5 @@ void NMEAParseFrame(FILE *fpInput, FILE *fpNMEAData)
 	
 	EndTime = clock();
 
-	RunningInfo(NumberSuccess, NumberFail, StartTime, EndTime);			//display running time and number of success or fail 
+	RunningInfo(NumberSuccess, NumberFail, StartTime, EndTime);		//display running time and number of success or fail 
 }
