@@ -312,8 +312,10 @@ void NMEAOutput(NMEA_DATA_T *pNMEAData, FILE *fpNMEAData)
 {
 	static unsigned int s_DataNum = 1;
 
-	NMEADataOutputter(pNMEAData, s_DataNum, fpNMEAData);		//out put NMEA data
-	SVDataOutputter(pNMEAData, s_DataNum);				//out put sates in view data
+	/// out put NMEA data
+	NMEADataOutputter(pNMEAData, s_DataNum, fpNMEAData);		
+	// out put sates in view data
+	SVDataOutputter(pNMEAData, s_DataNum);				
 
 	memset(pNMEAData, 0, sizeof(NMEA_DATA_T));
 
