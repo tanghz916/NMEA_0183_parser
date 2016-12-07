@@ -9,7 +9,6 @@
 
 #include "nmea.h"
 
-
 /**
 * build a folder "parserInfo" to contain output logs
 * open files and put into framework of parser
